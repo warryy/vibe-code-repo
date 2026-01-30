@@ -98,14 +98,14 @@ export function ChatHistory() {
 
   return (
     <div className="p-4">
-      <Button
+      {/* <Button
         variant="primary"
         size="sm"
         className="w-full mb-4"
         onClick={handleNewChat}
       >
         + 新建对话
-      </Button>
+      </Button> */}
 
       <div className="space-y-1">
         {conversations.map((conv) => {
