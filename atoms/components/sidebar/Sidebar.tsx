@@ -12,7 +12,7 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <div className="w-64 bg-gray-800 border-r border-gray-700 flex flex-col h-full">
+    <div className="w-[400px] bg-gray-800 border-r border-gray-700 flex flex-col h-full">
       <div className="p-4 border-b border-gray-700">
         <h1 className="text-xl font-bold text-white mb-2">Vibe Coding</h1>
         {session?.user && (
