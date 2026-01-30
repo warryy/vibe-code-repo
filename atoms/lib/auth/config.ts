@@ -4,6 +4,7 @@ import { sql } from '@/lib/db/client'
 import bcrypt from 'bcryptjs'
 
 export const { handlers, auth } = NextAuth({
+  secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
       name: 'Credentials',
