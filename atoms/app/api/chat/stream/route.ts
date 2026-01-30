@@ -52,7 +52,11 @@ export async function POST(req: NextRequest) {
           controller.close()
         } catch (error) {
           console.error('Stream error:', error)
-          controller.error(error)
+          const encoder = new TextEncoder()
+          const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+          controller.enqueue(encoder.encode(`data: ${JSON.stringify({ error: errorMessage })}\n\n`))
+          controller.enqueue(encoder.encode('data: [DONE]\n\n'))
+          controller.close()
         }
       },
     })

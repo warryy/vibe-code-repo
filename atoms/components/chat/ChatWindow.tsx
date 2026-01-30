@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from 'react'
 import { MessageList } from './MessageList'
-import { ChatInput } from './ChatInput'
+import { ChatInput, ChatMode } from './ChatInput'
 
 interface Message {
   id: string
@@ -44,7 +44,7 @@ export function ChatWindow({ conversationId }: ChatWindowProps) {
     fetchMessages()
   }, [conversationId])
 
-  const handleSendMessage = async (content: string) => {
+  const handleSendMessage = async (content: string, mode: ChatMode = 'stream') => {
     // 保存用户消息
     try {
       const response = await fetch(`/api/conversations/${conversationId}`, {
@@ -118,6 +118,17 @@ export function ChatWindow({ conversationId }: ChatWindowProps) {
 
                 try {
                   const json = JSON.parse(data)
+                  if (json.error) {
+                    // 处理错误消息
+                    setMessages((prev) =>
+                      prev.map((msg) =>
+                        msg.id === assistantMessageId
+                          ? { ...msg, content: `❌ 错误: ${json.error}` }
+                          : msg
+                      )
+                    )
+                    return
+                  }
                   if (json.content) {
                     fullContent += json.content
                     setMessages((prev) =>
@@ -160,7 +171,7 @@ export function ChatWindow({ conversationId }: ChatWindowProps) {
         <div ref={messagesEndRef} />
       </div>
       <div className="border-t border-gray-700 p-4">
-        <ChatInput onSend={handleSendMessage} />
+        <ChatInput onSend={handleSendMessage} mode="stream" />
       </div>
     </div>
   )
